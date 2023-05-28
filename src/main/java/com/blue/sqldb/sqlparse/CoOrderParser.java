@@ -1,11 +1,14 @@
 package com.blue.sqldb.sqlparse;
 
+import com.blue.sqldb.datastruct.baddtree.AvlTree;
 import com.blue.sqldb.datastruct.baddtree.Entity;
 import com.blue.sqldb.model.CoOrder;
 import com.blue.sqldb.model.CoOrderDataGrid;
 import com.blue.sqldb.utils.ListSortUtil;
 import org.apache.commons.collections4.CollectionUtils;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,7 +45,7 @@ public class CoOrderParser {
                 toScore = Long.parseLong(valueAnother);
             }
             if("(ctime".equals(fieled)) {
-                CoOrderDataGrid.ctimeIndex.getList(Long.parseLong(fieledValueArray[1]
+                CoOrderDataGrid.coOrderDataGrid.ctimeIndex.getList(Long.parseLong(fieledValueArray[1]
                         .replace(" ","").strip()),true,toScore,false);
             }
         }
@@ -60,19 +63,19 @@ public class CoOrderParser {
             String fieled = fieledValueArray[0].strip();
             String value = fieledValueArray[1].strip();
             if("id".equals(fieled)) {
-                CoOrder coOrder = CoOrderDataGrid.getById(Long.parseLong(value));
+                CoOrder coOrder = CoOrderDataGrid.coOrderDataGrid.getById(Long.parseLong(value));
                 valueList.add(coOrder);
             }
             if("uid".equals(fieled)) {
-                List<Entity> coOrder = CoOrderDataGrid.getByUid(Long.parseLong(value));
+                List<Entity> coOrder = CoOrderDataGrid.coOrderDataGrid.getByUid(Long.parseLong(value));
                 valueList = coOrder;
             }
             if("status".equals(fieled)) {
-                List<Entity> coOrder = CoOrderDataGrid.getByStatus(Integer.parseInt(value));
+                List<Entity> coOrder = CoOrderDataGrid.coOrderDataGrid.getByStatus(Integer.parseInt(value));
                 valueList = coOrder;
             }
             if("ctime".equals(fieled)) {
-                List<Entity> coOrder = CoOrderDataGrid.getByCtime(new Date(Long.parseLong(value)));
+                List<Entity> coOrder = CoOrderDataGrid.coOrderDataGrid.getByCtime(new Date(Long.parseLong(value)));
                 valueList = coOrder;
             }
         }
@@ -84,19 +87,19 @@ public class CoOrderParser {
             String[] valueArray = value.split(",");
             for (int j = 0; j < valueArray.length; j++) {
                 if("id".equals(fieled)) {
-                    CoOrder coOrder = CoOrderDataGrid.getById(Long.parseLong(valueArray[j]));
+                    CoOrder coOrder = CoOrderDataGrid.coOrderDataGrid.getById(Long.parseLong(valueArray[j]));
                     if (null != coOrder) {
                         valueList.add(coOrder);
                     }
                 }
                 if("uid".equals(fieled)) {
-                    List<Entity> coOrderList = CoOrderDataGrid.getByUid(Long.parseLong(valueArray[j]));
+                    List<Entity> coOrderList = CoOrderDataGrid.coOrderDataGrid.getByUid(Long.parseLong(valueArray[j]));
                     if(null != coOrderList && coOrderList.size() > 0){
                         valueList.addAll(coOrderList);
                     }
                 }
                 if("status".equals(fieled)) {
-                    List<Entity> coOrderList = CoOrderDataGrid.getByStatus(Integer.parseInt(valueArray[j]));
+                    List<Entity> coOrderList = CoOrderDataGrid.coOrderDataGrid.getByStatus(Integer.parseInt(valueArray[j]));
                     if(null != coOrderList && coOrderList.size() > 0){
                         valueList.addAll(coOrderList);
                     }
@@ -254,20 +257,5 @@ public class CoOrderParser {
             }
         }
         return valueList;
-    }
-
-    public static int orderBy(List<Entity> valueList,String setClause) {
-        if (CollectionUtils.isNotEmpty(valueList)) {
-            String[] fieldValueArray = setClause.split(",");
-            for (String fieldValueCombine : fieldValueArray) {
-                String[] fieldValue = fieldValueCombine.split("=");
-                String field = fieldValue[0].strip();
-                String value = fieldValue[1].strip();
-            }
-            for (Entity entity: valueList) {
-                CoOrder coOrder = (CoOrder)entity;
-                CoOrderDataGrid.update(coOrder);
-            }
-        }
     }
 }

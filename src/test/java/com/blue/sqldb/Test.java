@@ -34,14 +34,14 @@ public class Test {
                     new BigDecimal(0.00025), new BigDecimal(0.00025), 2, new BigDecimal("0.00025"), new BigDecimal("25"),
                     new BigDecimal("0.00025"), (i%5 +1), 1, 1,1, 1L, "LINKUSDT", true,
                     new BigDecimal(0.00025), 1L, 1,now);
-            CoOrderDataGrid.update(coOrder);
+            CoOrderDataGrid.coOrderDataGrid.update(coOrder);
         }
         System.out.println(System.currentTimeMillis() - start);
 
         List<Entity> coOrderList = null;
         start = System.currentTimeMillis();
         for (int i = 0; i < 1000; i++) {
-            coOrderList = CoOrderDataGrid.getByCtime(now);
+            coOrderList = CoOrderDataGrid.coOrderDataGrid.getByCtime(now);
         }
         System.out.println(System.currentTimeMillis() - start + "/" + coOrderList.size());
 

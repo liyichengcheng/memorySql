@@ -558,4 +558,14 @@ public class CoOrder extends Entity implements Serializable {
            memo, source,brokerId,positionId,symbol, existDB,thisFee,traderId,orderType,new Date());
         return coOrder;
     }
+
+    public CoOrder clone() {
+        CoOrder coOrder = new CoOrder(id,clientId,uid,positionType,open,side,type,leverageLevel,new BigDecimal(price.toString()),new BigDecimal(volume.toString()),
+                new BigDecimal(openTakerFeeRate.toString()), new BigDecimal(openMakerFeeRate.toString()),new BigDecimal(closeTakerFeeRate.toString()),
+                new BigDecimal(closeMakerFeeRate.toString()),new BigDecimal(realizedAmount.toString()), dealVolume.intValue(),
+                new BigDecimal(dealMoney.toString()),new BigDecimal(avgPrice.toString()),new BigDecimal(tradeFee.toString()),status,
+                memo, source,brokerId,positionId,symbol,existDB,new BigDecimal(thisFee.toString()),traderId,orderType,new Date(ctime.getTime()));
+        coOrder.setMtime(new Date(mtime.getTime()));
+        return coOrder;
+    }
 }

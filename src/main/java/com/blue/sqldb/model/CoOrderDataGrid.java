@@ -8,10 +8,30 @@ import com.blue.sqldb.exception.DuplicationKeyException;
 import java.util.*;
 
 public class CoOrderDataGrid {
+    public static CoOrderDataGrid coOrderDataGrid = new CoOrderDataGrid();
+    public static Map<String,AvlTree<CoOrder>> transactionMap = new HashMap<String,AvlTree<CoOrder>>();
     public static AvlTree<CoOrder> coOrderData = new AvlTree<CoOrder>();
     public static Map<Long, AvlTree<CoOrder>> uidIndex = new HashMap<Long,AvlTree<CoOrder>>();
     public static Map<Integer,AvlTree<CoOrder>> statusIndex = new HashMap<Integer,AvlTree<CoOrder>>();
     public static SecondIndex<CoOrder> ctimeIndex = new SecondIndex<CoOrder>();
+
+    public static AvlTree<CoOrder> get(String transactionId) {
+        AvlTree<CoOrder> coOrderAvlTree = CoOrderDataGrid.transactionMap.get(transactionId);
+        if (coOrderAvlTree == null) {
+            coOrderAvlTree = new AvlTree<CoOrder>();
+            CoOrderDataGrid.transactionMap.put(transactionId,coOrderAvlTree);
+        }
+        return coOrderAvlTree;
+    }
+
+    public static CoOrderDataGrid cloneFromData() {
+        CoOrderDataGrid coOrderDataGrid = new CoOrderDataGrid();
+        for (Entity entity:CoOrderDataGrid.coOrderDataGrid.coOrderData.getAll()) {
+            CoOrder coOrder = (CoOrder) entity;
+            coOrderDataGrid.insert(coOrder);
+        }
+        return coOrderDataGrid;
+    }
 
     public static int insert(CoOrder coOrder) {
         if (null == coOrder || null == coOrder.getId() || coOrderData.getOne(coOrder.getId()) != null) {

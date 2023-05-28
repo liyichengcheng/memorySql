@@ -26,7 +26,7 @@ public class InsertParser {
 
             if("futures.co_order_e_linkusdt".equals(tableName)) {
                 CoOrder coOrder = CoOrder.build(filedsArray,valueArray);
-                CoOrderDataGrid.insert(coOrder);
+                CoOrderDataGrid.coOrderDataGrid.insert(coOrder);
             }
         }
         return true;
